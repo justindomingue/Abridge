@@ -78,12 +78,6 @@ Note that `suffix` is added automatically.
 
     let g:abridge_suffix_key = 'new_key'
 
-### Disable Mapping
-
-To overwrite the mapping keys, set `g:abridge_map_keys` to your preferred keys. For example,
-
-    let g:abridge_map_keys = "<tab>"
-
 ### Disable Default Snippets
 
 Add `let abridge_default_abb = 0` to your `vimrc`.
