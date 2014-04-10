@@ -73,15 +73,19 @@ endfunction
 function! s:SelectNextIfSafe(key)
   " Search for a match
   " cursor will move to start of match if there is one
-  let next = search('<#.[^#]*#>', 'cw')
-
-  " If no match, simply insert the key
-  if next == 0
-    return a:key
-  " Otherwise, select next
+  if search('<#.[^#]*#>', 'cw') == 0
+    return a:key                          " If no match, simply insert the key
   else
-    " Uses mark A
-    normal! 2xmAf#.h
+    " Otherwise, select next
+    let start = col('.')                  " placeholder start position
+    call search('#>', '')                 " find end position
+    let end = col('.')-3                  " placeholder end position 
+
+    " remove <# and #>
+    execute "s /<#//"
+    execute "s /#>//"
+
+    call cursor(getline('.'), start)      " put cursor back at start
 
     " Get char under cursor
     let char = getline('.')[col('.')-1]
@@ -89,9 +93,10 @@ function! s:SelectNextIfSafe(key)
 
     " If char is dot, no placeholder
     if char == '-'
-      normal! x
+      normal! 2x
     else
-      normal! v`A
+      normal! v
+      call cursor(getline('.'), end)
     endif
 
     return ""
@@ -130,57 +135,57 @@ endif
 " C {{{
 
 " flow control
-call Abridge("if", "if (<#-#>) {<cr><#-#><CR>}", "c,cpp")
-call Abridge("ife", "if (<#-#>) {<CR><#/* code */#><CR>} else {<CR><#/* code */#><CR>}", "c,cpp")
+call Abridge("if", "if (<#--#>) {<cr><#--#><CR>}", "c,cpp")
+call Abridge("ife", "if (<#--#>) {<CR><#/* code */#><CR>} else {<CR><#/* code */#><CR>}", "c,cpp")
 call Abridge("swi", "switch (<#var#>) {<CR>case <#val#>:<CR>}", "c,cpp")
 
 " loops
 call Abridge("for", "for (<#int i = 0#>; <#i < 9#>; <#i++#>) {<CR><#/* code */#><CR>}", "c,cpp")
-call Abridge("wh", "while (<#-#>) {<CR><#/* code */#><CR>}", "c,cpp")
-call Abridge("dowh", "do {<CR><CR>} while(<#-#>);", "c,cpp")
+call Abridge("wh", "while (<#--#>) {<CR><#/* code */#><CR>}", "c,cpp")
+call Abridge("dowh", "do {<CR><CR>} while(<#--#>);", "c,cpp")
 
 " variables
 call Abridge("inti", "int i = 0;<##>", "c,cpp")
 
 " functions
-call Abridge("funi", "int <#-#>(<#-#>) {<CR><#-#><CR>}", "c,cpp")
-call Abridge("funip", "int <#-#>(<#-#>);", "c,cpp")
-call Abridge("fun", "<#-#> <#-#>(<#-#>) {<CR><#-#><CR>}", "c,cpp")
-call Abridge("funp", "<#-#> <#-#>(<#-#>);", "c,cpp")
+call Abridge("funi", "int <#--#>(<#--#>) {<CR><#--#><CR>}", "c,cpp")
+call Abridge("funip", "int <#--#>(<#--#>);", "c,cpp")
+call Abridge("fun", "<#--#> <#--#>(<#--#>) {<CR><#--#><CR>}", "c,cpp")
+call Abridge("funp", "<#--#> <#--#>(<#--#>);", "c,cpp")
 
 " operators
-call Abridge("tern", "<#-#> ? <#-#> : <#-#>;", "c,cpp")
+call Abridge("tern", "<#--#> ? <#--#> : <#--#>;", "c,cpp")
 
 " structs
-call Abridge("stru", "struct <#-#> {<CR><#-#><CR>};", "c,cpp")
-call Abridge("strut", "typedef struct <#-#> {<CR><#-#><CR>};", "c,cpp")
+call Abridge("stru", "struct <#--#> {<CR><#--#><CR>};", "c,cpp")
+call Abridge("strut", "typedef struct <#--#> {<CR><#--#><CR>};", "c,cpp")
 
 " C preprocessor directives
-call Abridge("#i", "#include <<#-#>>", "c,cpp")
-call Abridge("#I", '#include "<#-#>"', "c,cpp")
-call Abridge("#d", "#define <#-#>", "c,cpp")
+call Abridge("#i", "#include <<#--#>>", "c,cpp")
+call Abridge("#I", '#include "<#--#>"', "c,cpp")
+call Abridge("#d", "#define <#--#>", "c,cpp")
 
 " Templates
-call Abridge("main", "int main(int argc, char *argv[]) {<CR><#-#><CR>}", "c,cpp")
+call Abridge("main", "int main(int argc, char *argv[]) {<CR><#--#><CR>}", "c,cpp")
 
 " other
 
-call Abridge("header", '/*<CR><C-O>I * File: ' . @% . '<CR><C-O>I * Author: <#-#><CR><C-O>I * Date: <C-R>=strftime("%b %d, %Y")<CR><CR><C-O>I*/<CR>', "c,cpp")
+call Abridge("header", '/*<CR><C-O>I * File: ' . @% . '<CR><C-O>I * Author: <#--#><CR><C-O>I * Date: <C-R>=strftime("%b %d, %Y")<CR><CR><C-O>I*/<CR>', "c,cpp")
 call Abridge("section", "/* ---------- <#SECTION#> ---------- */", "c,cpp")
 
 " }}}
 
 " JavaScript {{{
 
-call Abridge("fun", "function <#-#>(<#-#>) {<cr><#-#><cr>}", "javascript")
+call Abridge("fun", "function <#--#>(<#--#>) {<cr><#--#><cr>}", "javascript")
 
 " }}}
 
 " Vim Script {{{
 
 " header comment
-call Abridge("-h-", '" File: ' . @% . '<CR>" Author: <#-#><CR>" Last Change: <#-#><CR>" Version: <#-#><CR>" Usage: <#-#>', 'vim')
-call Abridge("abridge", "call Abridge(\"<#-#>\", \"<#-#>\", \"<#-#>\"", "vim")
+call Abridge("-h-", '" File: ' . @% . '<CR>" Author: <#--#><CR>" Last Change: <#--#><CR>" Version: <#--#><CR>" Usage: <#--#>', 'vim')
+call Abridge("abridge", "call Abridge(\"<#--#>\", \"<#--#>\", \"<#--#>\"", "vim")
 
 " }}}
 "
