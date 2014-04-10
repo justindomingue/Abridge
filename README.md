@@ -26,10 +26,10 @@ For example, in a C file, Abridge defines useful snippets like `for`.
         |
         V
     for (<#int i = 0#>; <#i < 9#>; <#i++#>) {
-      <#-#>
+      <#--#>
     }
 
-Then use `,,` to loop through the *placeholders* (code defined between `<#...#>`). If the placeholder is `-`, Abridge enters insert mode automatically. Otherwise, it will simply select the placeholder. If you want to keep the placeholder, hit `,,` again. If not, hit `c` to change the visual selection and then `,,` again to select the next placeholder.
+Then use `,,` to loop through the *placeholders* (code defined between `<#...#>`). If the placeholder is `--`, Abridge enters insert mode automatically. Otherwise, it will simply select the placeholder. If you want to keep the placeholder, hit `,,` again. If not, hit `c` to change the visual selection and then `,,` again to select the next placeholder.
 
 ### Custom Snippets
 
@@ -47,14 +47,14 @@ This command will create an abbreviation for `snippet+suffix` which will expand 
 
 For example, 
 
-    call Abridge("for", "for(<#int i = 0#>; <#i < 9#>; <#i++#>) {<CR><#-#><CR>}", "c,cpp")
+    call Abridge("for", "for(<#int i = 0#>; <#i < 9#>; <#i++#>) {<CR><#--#><CR>}", "c,cpp")
 
 Note that `suffix` is added automatically.
 
 #### Placeholders
 
 - `<#placeholder#>` visually selects `placeholder` when `,,` is hit
-- `<#-#>` enters insert mode
+- `<#--#>` enters insert mode
 
 ### Mapping
 
