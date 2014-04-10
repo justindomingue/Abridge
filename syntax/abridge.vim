@@ -13,7 +13,7 @@ let b:current_syntax = "abridge"
 " SYNTAX {{{
 " syntax highlighting for abridge placeholders
 
-syntax match abridgePlaceholder "<#.[^#]*#>"
+autocmd Syntax * syntax match abridgePlaceholder "<#.[^#]*#>" containedin=ALL
 highlight link abridgePlaceholder Comment
 
 " }}}
