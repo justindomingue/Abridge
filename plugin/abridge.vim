@@ -124,6 +124,13 @@ execute "inoremap <silent> " . g:abridge_map_keys . " <C-O>:call <SID>SelectNext
 
 " }}}
 
+" SYNTAX {{{
+
+" Highlight placeholders as Comment
+autocmd Syntax * call matchadd("Comment", "<#[^#]*#>")
+
+" }}}
+
 " ABBREVIATION DEFINITIONS {{{
 
 " Do not define the abbreviations if the user doesn't want to
