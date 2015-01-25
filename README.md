@@ -6,8 +6,6 @@ Easily create custom context-aware snippets automatically expanded when recogniz
 
 The snippets are only expanded when writing code, not in comments, strings.
 
-![Animated screenshot](http://www.justindomingue.com/public/screenshot.gif)
-
 ## Installation
 
 Either copy plugin/abridge.vim to ~/.vim/plugin/ or use pathogen :
@@ -37,8 +35,8 @@ You can define your own very easily. Add the command in your `.vimrc` :
 
     call Abridge("snippet", "expansion", "filetype")
 
-- snippet: expanded expression
-- expansion: abbreviation (contains <1> - see note below)
+- snippet: abbreviaton
+- expansion: expanded expression (contains <1> - see note below)
 - filetype : file type on which to apply the abbreviation ('*' for all file types)
 
 This command will create an abbreviation for `snippet+suffix` which will expand to `expansion` in file with type `filetype`.
